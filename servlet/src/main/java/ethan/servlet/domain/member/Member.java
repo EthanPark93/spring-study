@@ -1,4 +1,4 @@
-package ethan.servlet.domain;
+package ethan.servlet.domain.member;
 
 import lombok.Getter;
 import lombok.Setter;

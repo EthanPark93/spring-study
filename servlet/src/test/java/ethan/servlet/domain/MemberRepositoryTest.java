@@ -1,5 +1,7 @@
 package ethan.servlet.domain;
 
+import ethan.servlet.domain.member.Member;
+import ethan.servlet.domain.member.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

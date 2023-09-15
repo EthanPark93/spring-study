@@ -1,7 +1,7 @@
 package ethan.servlet.web.servlet;
 
-import ethan.servlet.domain.Member;
-import ethan.servlet.domain.MemberRepository;
+import ethan.servlet.domain.member.Member;
+import ethan.servlet.domain.member.MemberRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
