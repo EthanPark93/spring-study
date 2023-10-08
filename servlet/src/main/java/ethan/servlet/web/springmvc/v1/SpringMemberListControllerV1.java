@@ -14,7 +14,7 @@ import java.util.Map;
 public class SpringMemberListControllerV1 {
     MemberRepository memberRepository = MemberRepository.getInstance();
     @RequestMapping("/springmvc/v1/members")
-    public ModelAndView process(Map<String, String> paramMap) {
+    public ModelAndView process() {
         List<Member> members = memberRepository.findAll();
         ModelAndView mv = new ModelAndView("members");
         mv.addObject("members", members);
