@@ -43,7 +43,7 @@ public class ResponseBodyController {
 
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @GetMapping("/response-body-json-v1")
+    @GetMapping("/response-body-json-v2")
     public HelloData responseBodyJsonV2() {
         HelloData helloData = new HelloData();
         helloData.setUsername("userA");
