@@ -2,6 +2,7 @@ package com.ethan.security1.controller;
 
 import com.ethan.security1.model.User;
 import com.ethan.security1.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+@Slf4j
 @Controller // view return
 public class IndexController {
 
@@ -29,16 +31,19 @@ public class IndexController {
     }
 
     @GetMapping("/user")
+    @ResponseBody
     public String user() {
         return "user";
     }
 
     @GetMapping("/admin")
+    @ResponseBody
     public String admin() {
         return "admin";
     }
 
     @GetMapping("/manager")
+    @ResponseBody
     public String manager() {
         return "manager";
     }
@@ -56,12 +61,14 @@ public class IndexController {
 
     @PostMapping("/join")
     public String join(User user) {
-        System.out.println(user);
+//        System.out.println(user);
+        log.info("user={}", user);
+
         user.setRole("ROLE_USER");
         String rawPassword = user.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
-        userRepository.save(user); //회원가입 되지만 비밀번호 : 1234 => 암호화 안되어서 시큐리티로 로그인 불가
+        userRepository.save(user); //회원가입 되지만 비밀번호 encode하지 않을 경우 : 1234 => 암호화 안되어서 시큐리티로 로그인 불가
 
         return "redirect:/loginForm";
     }

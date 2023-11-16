@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -24,6 +23,9 @@ public class SecurityConfig {
         ).formLogin(formLogin ->
                 formLogin
                         .loginPage("/loginForm")
+//                        .usernameParameter("파라미터 바꾸고싶으면 여기에 입력")
+                        .loginProcessingUrl("/login") // 시큐리티에서 낚아챔
+                        .defaultSuccessUrl("/")
         );
 
         return http.build();
