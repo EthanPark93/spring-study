@@ -18,6 +18,8 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
+# 민감정보 커밋 ignore
+application-secret.properties
 .idea
 *.iws
 *.iml
