@@ -6,13 +6,10 @@ package com.ethan.security1.config;
 // 4-1. 자동 회원 가입 가능
 // 4-2 (이메일, 전화번호, 이름, 아이디) 쇼핑몰 -> (집주소), 백화점몰 -> (등급)
 
-import com.ethan.security1.config.auth.PrincipalOauth2UserService;
+import com.ethan.security1.config.oauth.PrincipalOauth2UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

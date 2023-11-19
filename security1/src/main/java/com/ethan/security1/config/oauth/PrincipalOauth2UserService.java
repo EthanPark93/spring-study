@@ -1,4 +1,4 @@
-package com.ethan.security1.config.auth;
+package com.ethan.security1.config.oauth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -14,9 +14,14 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     // 구글로 부터 받은 userRequest 데이터에 대한 후처리되는 함수.
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info("getClientRegistration={}", userRequest.getClientRegistration());
+        log.info("getClientRegistration={}", userRequest.getClientRegistration()); // registrationID로 어떤 oauth로 로그인 했는지 알 수 있음.
         log.info("getAccessToken.getTokenValue={}", userRequest.getAccessToken().getTokenValue());
+        // 구글 로그인 버튼 클릭 -> 구글 로그인 창 -> 로그인 완료 -> code를 return (Oauth-client 라이브러리) -> 억세스 토큰 요청
+        // userRequest 정보 -> loadUser함수 -> 구글로부터 회원프로필 받아줌
         log.info("super.loadUser(userRequest).getAttributes={}", super.loadUser(userRequest).getAttributes());
+
+        OAuth2User oAuth2User = super.loadUser(userRequest);
+        // 회원가입을 강제로 진행할 예정
         return super.loadUser(userRequest);
     }
 }

@@ -7,19 +7,27 @@ package com.ethan.security1.config.auth;
 //  User 오브젝트타입 => UserDetails 타입 객체
 
 import com.ethan.security1.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 // Security Session => Authentication => UserDetails(PrincipalDetails)
-public class PrincipalDetails implements UserDetails {
+
+@Data
+@AllArgsConstructor
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user; //   콤포지션
 
-    public PrincipalDetails(User user) {
-        this.user = user;
+    @Override
+    public Map<String, Object> getAttributes() {
+        return null;
     }
 
     //  해당 User의 권한을 리턴하는 곳
@@ -68,5 +76,10 @@ public class PrincipalDetails implements UserDetails {
         //  현재 시간 - 로그인 시간 => 1년을 초과하면 return false
 
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 }

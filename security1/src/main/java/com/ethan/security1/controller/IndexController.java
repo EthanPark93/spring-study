@@ -1,28 +1,58 @@
 package com.ethan.security1.controller;
 
+import com.ethan.security1.config.auth.PrincipalDetails;
 import com.ethan.security1.model.User;
 import com.ethan.security1.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Slf4j
+@AllArgsConstructor
 @Controller // view return
 public class IndexController {
 
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    public IndexController(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    @GetMapping("/test/login")
+    @ResponseBody
+    public String testLogin(
+            Authentication authentication,
+            @AuthenticationPrincipal UserDetails userDetails,
+            @AuthenticationPrincipal PrincipalDetails annotationPrincipalDetails) { // DI (의존성 주입)
+        log.info("/test/login ==================");
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal(); // 다운 캐스팅으로 기능 회복
+        log.info("(principalDetails) authentication.getUser()={}", principalDetails.getUser()); // UserDetails를 implements한 prinsipalDetails로 다운
+
+        log.info("userDetails.getUsername()={}", userDetails.getUsername()); // UserDetails에는 getUser 함수가 없다
+        log.info("annotationPrincipalDetails.getUser()={}", annotationPrincipalDetails.getUser()); // @AuthenticationPrincipal을 통해 처음부터 하위 타입으로 받아와, getUser 함수 사용 가능
+
+        return "세션 정보 확인하기";
+    }
+
+    @GetMapping("/test/oauth/login")
+    @ResponseBody
+    public String testOAuthLogin(
+            Authentication authentication,
+            @AuthenticationPrincipal OAuth2User oauth) { // DI (의존성 주입)
+        log.info("/test/oauth/login ==================");
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal(); // 다운 캐스팅으로 기능 회복
+        log.info("authentication.getAttributes()={}", oAuth2User.getAttributes());
+        log.info("oauth2User={}", oauth.getAttributes());
+
+        return " OAuth 세션 정보 확인하기";
     }
 
     @GetMapping({"", "/"})
