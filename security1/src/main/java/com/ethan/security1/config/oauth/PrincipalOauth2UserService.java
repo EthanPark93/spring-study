@@ -1,6 +1,9 @@
 package com.ethan.security1.config.oauth;
 
 import com.ethan.security1.config.auth.PrincipalDetails;
+import com.ethan.security1.config.oauth.provider.FacebookUserInfo;
+import com.ethan.security1.config.oauth.provider.GoogleUserInfo;
+import com.ethan.security1.config.oauth.provider.OAuth2UserInfo;
 import com.ethan.security1.model.User;
 import com.ethan.security1.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +39,19 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         // userRequest 정보 -> loadUser함수 -> 구글로부터 회원프로필 받아줌
         log.info("super.loadUser(userRequest).getAttributes={}", oAuth2User.getAttributes());
 
-        String provider = userRequest.getClientRegistration().getClientName(); // google
-        String providerId = oAuth2User.getAttribute("sub");
+
+        OAuth2UserInfo oAuth2UserInfo = null;
+        if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
+            oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
+        } else if (userRequest.getClientRegistration().getRegistrationId().equals("facebook")) {
+            oAuth2UserInfo = new FacebookUserInfo(oAuth2User.getAttributes());
+        }
+
+        String provider = oAuth2UserInfo.getProvider(); // google
+        String providerId = oAuth2UserInfo.getProviderId();
         String username = provider + "_" + providerId; // google_34234뭐시기
         String password = bCryptPasswordEncoder.encode("겟인데어");
-        String email = oAuth2User.getAttribute("email");
+        String email = oAuth2UserInfo.getEmail();
         String role = "ROLE_USER";
 
         User userEnity = userRepository.findByUsername(username);
