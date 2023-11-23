@@ -3,6 +3,7 @@ package com.ethan.security1.config.oauth;
 import com.ethan.security1.config.auth.PrincipalDetails;
 import com.ethan.security1.config.oauth.provider.FacebookUserInfo;
 import com.ethan.security1.config.oauth.provider.GoogleUserInfo;
+import com.ethan.security1.config.oauth.provider.NaverUserInfo;
 import com.ethan.security1.config.oauth.provider.OAuth2UserInfo;
 import com.ethan.security1.model.User;
 import com.ethan.security1.repository.UserRepository;
@@ -13,6 +14,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -45,6 +48,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
         } else if (userRequest.getClientRegistration().getRegistrationId().equals("facebook")) {
             oAuth2UserInfo = new FacebookUserInfo(oAuth2User.getAttributes());
+        } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
+            oAuth2UserInfo = new NaverUserInfo((Map) oAuth2User.getAttributes().get("response"));
         }
 
         String provider = oAuth2UserInfo.getProvider(); // google
