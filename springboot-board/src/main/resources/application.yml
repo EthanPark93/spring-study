@@ -1,0 +1,19 @@
+# 포트 넘버 설정 (기본 설정 8080)
+server:
+  port: 8080
+
+# 스프링 관련 설정
+spring:
+  thymeleaf:
+    cache: false
+  # database 민감 정보 연동
+  profiles:
+    include: secret
+
+  # spring data jpa 설정
+  jpa:
+    # database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update

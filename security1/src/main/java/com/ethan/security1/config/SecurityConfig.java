@@ -46,8 +46,8 @@ public class SecurityConfig {
                 oauth2
                         .loginPage("/loginForm")
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
-                        .userService(principalOauth2UserService) // 구글 로그인이 완료된 뒤의 후처리가 필요함. Tip.  코드 x (엑세스토큰+사용자 정보 o)
-                )
+                                .userService(principalOauth2UserService) // 구글 로그인이 완료된 뒤의 후처리가 필요함. Tip.  코드 x (엑세스토큰+사용자 정보 o)
+                        )
         );
 
 
