@@ -28,7 +28,7 @@ public class BoardEntity extends BaseEntity{
     private String boardContents;
 
     @Column
-    private int boardHis;
+    private int boardHits;
 
     public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();
@@ -37,7 +37,7 @@ public class BoardEntity extends BaseEntity{
         boardEntity.setBoardPass(boardDTO.getBoardPass());
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
-        boardEntity.setBoardHis(0);
+        boardEntity.setBoardHits(0);
 
         return boardEntity;
     }
