@@ -29,7 +29,10 @@ public class BoardController {
     @PostMapping("/save")
     public String save(@ModelAttribute BoardDTO boardDTO) {
         log.info("boardDTO={}", boardDTO);
-        boardService.save(boardDTO);
+
+        for (int i = 0; i < 50; i++) {
+            boardService.save(boardDTO);
+        }
 
         return "index";
     }
@@ -86,7 +89,7 @@ public class BoardController {
     public String paging(@PageableDefault(page = 1) Pageable pageable, Model model) {
 //        pageable.getPageNumber();
         Page<BoardDTO> boardList = boardService.paging(pageable);
-        int blockLimit = 3;
+        int blockLimit = 10;
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
         int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
 

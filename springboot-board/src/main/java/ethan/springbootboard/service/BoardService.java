@@ -76,7 +76,7 @@ public class BoardService {
     public Page<BoardDTO> paging(Pageable pageable) {
 
         int page = pageable.getPageNumber() - 1;
-        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+        int pageLimit = 10; // 한 페이지에 보여줄 글 갯수
 
         // 한 페이지당 pageLimit 개씩 글을 보여주고 정렬 기준은 id 기준으로 내림차순 정렬
         // page 위치의 매개변수는 0부터 시작 (인덱스 카운팅)
