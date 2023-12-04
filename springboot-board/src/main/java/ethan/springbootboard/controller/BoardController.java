@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -27,12 +28,13 @@ public class BoardController {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute BoardDTO boardDTO) {
+    public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
         log.info("boardDTO={}", boardDTO);
 
-        for (int i = 0; i < 50; i++) {
-            boardService.save(boardDTO);
-        }
+//        for (int i = 0; i < 50; i++) {
+//            boardService.save(boardDTO);
+//        }
+        boardService.save(boardDTO);
 
         return "index";
     }
@@ -46,7 +48,8 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model) {
+    public String findById(@PathVariable Long id, Model model,
+                           @PageableDefault(page=1) Pageable pageable) {
         /*
             해당 게시글의 조회수를 하나 올리고
             게시글 데이터를 가져와서 detail.html에 출력
@@ -56,6 +59,7 @@ public class BoardController {
         BoardDTO boardDTO = boardService.findById(id);
 
         model.addAttribute("board", boardDTO);
+        model.addAttribute("page", pageable.getPageNumber());
 
         return "detail";
     }
@@ -90,7 +94,7 @@ public class BoardController {
 //        pageable.getPageNumber();
         Page<BoardDTO> boardList = boardService.paging(pageable);
         int blockLimit = 10;
-        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
+        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 11 21 31 ~~
         int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
 
         // ex) page 갯수 20개
@@ -99,7 +103,6 @@ public class BoardController {
         // 현재 사용자가 7페이지
         // '7' 8 9
         // 보여지는 페이지 갯수 3개
-
         model.addAttribute("boardList", boardList);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
