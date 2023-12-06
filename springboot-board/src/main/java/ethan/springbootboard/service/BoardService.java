@@ -2,6 +2,8 @@ package ethan.springbootboard.service;
 
 import ethan.springbootboard.dto.BoardDTO;
 import ethan.springbootboard.entity.BoardEntity;
+import ethan.springbootboard.entity.BoardFileEntity;
+import ethan.springbootboard.repository.BoardFileRepository;
 import ethan.springbootboard.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,7 @@ import java.util.UUID;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final BoardFileRepository boardFileRepository;
 
     public void save(BoardDTO boardDTO) throws IOException {
         // 파일 첨부에 따라 로직 분리
@@ -53,6 +56,12 @@ public class BoardService {
             String storedFileName = UUID.randomUUID() + "_" + originalFilename; // 3번.
             String savePath = "/Users/ethan/upload/" + storedFileName; // 4번. 맥 기준 경로
             boardFile.transferTo(new File(savePath)); // 5번.
+            BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
+            Long savedId = boardRepository.save(boardEntity).getId();
+            BoardEntity board = boardRepository.findById(savedId).get();
+
+            BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
+            boardFileRepository.save(boardFileEntity);
         }
     }
 
