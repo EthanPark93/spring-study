@@ -13,7 +13,8 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "board_table")
-public class BoardEntity extends BaseEntity{
+public class BoardEntity extends BaseEntity {
+
     @Id // pk 컬럼 지정. 필수
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private Long id;
@@ -37,7 +38,7 @@ public class BoardEntity extends BaseEntity{
     private int fileAttached; // 1 or 0
 
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<BoardFileEntity> boardEntityList = new ArrayList<>();
+    private List<BoardFileEntity> boardFileEntityList = new ArrayList<>();
 
     public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();
@@ -77,4 +78,5 @@ public class BoardEntity extends BaseEntity{
 
         return boardEntity;
     }
+
 }

@@ -54,7 +54,7 @@ public class BoardService {
             String originalFilename = boardFile.getOriginalFilename(); // 2번.
 //            String storedFileName = System.currentTimeMillis() + "_" + originalFilename;
             String storedFileName = UUID.randomUUID() + "_" + originalFilename; // 3번.
-            String savePath = "/Users/ethan/upload/" + storedFileName; // 4번. 맥 기준 경로
+            String savePath = "/Users/ethan/springboot_img/" + storedFileName; // 4번. 맥 기준 경로
             boardFile.transferTo(new File(savePath)); // 5번.
             BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
             Long savedId = boardRepository.save(boardEntity).getId();
@@ -65,6 +65,7 @@ public class BoardService {
         }
     }
 
+    @Transactional
     public List<BoardDTO> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
         List<BoardDTO> boardDTOList = new ArrayList<>();
