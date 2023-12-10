@@ -53,7 +53,20 @@
 
 <!-- 댓글 출력 부분 -->
 <div id="comment-list">
-
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <th>댓글번호</th>-->
+<!--            <th>작성자</th>-->
+<!--            <th>내용</th>-->
+<!--            <th>작성시간</th>-->
+<!--        </tr>-->
+<!--        <tr th:each="comment: ${commentList}">-->
+<!--            <td th:text="${comment.id}"></td>-->
+<!--            <td th:text="${comment.commentWriter}"></td>-->
+<!--            <td th:text="${comment.commentContents}"></td>-->
+<!--            <td th:text="${comment.commentCreatedTime}"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
 </div>
 
 </body>
@@ -75,7 +88,26 @@
                 "boardId": id
             },
             success: function (res) {
-                console.log("요청 성공 메시지 : ", res);
+                console.log("요청성공", res);
+                let output = "<table class='table'>";
+
+                output += "<tr><th>댓글번호</th>";
+                output += "<th>작성자</th>";
+                output += "<th>내용</th>";
+                output += "<th>작성시간</th></tr>";
+                for (let i in res) {
+                    output += "<tr>";
+                    output += "<td>" + res[i].id + "</td>";
+                    output += "<td>" + res[i].commentWriter + "</td>";
+                    output += "<td>" + res[i].commentContents + "</td>";
+                    output += "<td>" + res[i].commentCreatedTime + "</td>";
+                    output += "</tr>";
+                }
+
+                output += "</table>";
+                document.getElementById('comment-list').innerHTML = output;
+                document.getElementById('commentWriter').value = '';
+                document.getElementById('commentContents').value = '';
             },
             error: function (err) {
                 console.log("요청 실패 : ", err);
@@ -101,16 +133,6 @@
         fetch(`/board/delete/${id}`, {
             method: 'DELETE',
         })
-            // .then(response => {
-            //     if (!response.ok) {
-            //         throw new Error(`HTTP error! Status: ${response.status}`);
-            //     }
-            //     return response.json();
-            // })
-            // .then(data => {
-            //     // 성공적으로 삭제되었을 때 수행할 동작
-            //     console.log("삭제 성공");
-            // })
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
