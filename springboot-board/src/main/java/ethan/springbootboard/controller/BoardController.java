@@ -1,7 +1,9 @@
 package ethan.springbootboard.controller;
 
 import ethan.springbootboard.dto.BoardDTO;
+import ethan.springbootboard.dto.CommentDTO;
 import ethan.springbootboard.service.BoardService;
+import ethan.springbootboard.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final CommentService commentService;
 
     @GetMapping("/save")
     public String saveForm() {
@@ -56,6 +59,10 @@ public class BoardController {
          */
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
+
+        /* 댓글 목록 가져오기 */
+        List<CommentDTO> commentDTOList = commentService.findAll(id);
+        model.addAttribute("commentList", commentDTOList);
 
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", pageable.getPageNumber());
